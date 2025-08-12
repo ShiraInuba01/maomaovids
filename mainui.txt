@@ -42,22 +42,23 @@ credit.TextColor3 = Color3.fromRGB(200, 200, 200)
 -- Button Data
 local buttonData = {
     {text = "🎲 Pet Randomizer", color = Color3.fromRGB(233, 143, 170), onClick = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/ShiraInuba01/maomaofiles/main/Egg%20Randomizer.txt"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ShiraInuba01/maomaovids/main/Egg%20Randomizer.txt"))()
     end},
     {text = "🕒 Auto Age Pet 50", color = Color3.fromRGB(183, 127, 144), onClick = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/ShiraInuba01/maomaofiles/main/Lvl50Egg.txt"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ShiraInuba01/maomaovids/main/Lvl50Egg.txt"))()
     end},
     {text = "🔬 Mutation Finder", color = Color3.fromRGB(186, 170, 204), onClick = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/ShiraInuba01/maomaofiles/main/PetMutationFinder.txt"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ShiraInuba01/maomaovids/main/PetMutationFinder.txt"))()
     end},
     {text = "🧬 Duplicator", color = Color3.fromRGB(120, 108, 204), onClick = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/ShiraInuba01/maomaofiles/main/Item%20Randomizer.txt"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ShiraInuba01/maomaovids/main/Item%20Randomizer.txt"))()
     end},
     {text = "NEW 🤝🧊 Trade Freeze", color = Color3.fromRGB(75, 57, 115), onClick = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/ShiraInuba01/maomaofiles/main/TradeExploit.txt"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ShiraInuba01/maomaovids/main/TradeExploit.txt"))()
     end},
     {text = "NEW 🐶 Pet Spawner", color = Color3.fromRGB(40, 56, 74), onClick = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/ShiraInuba01/maomaofiles/main/PetSpawner.txt"))()
+        local Spawner = loadstring(game:HttpGet("https://gitlab.com/darkiedarkie/dark/-/raw/main/Spawner.lua"))()
+Spawner.Load()
     end},
 }
 
