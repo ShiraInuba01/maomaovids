@@ -1,1 +1,150 @@
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+local TweenService = game:GetService("TweenService")
+local Lighting = game:GetService("Lighting")
+
+-- Add Blur Effect
+local blur = Instance.new("BlurEffect")
+blur.Size = 12
+blur.Parent = Lighting
+
+-- Create ScreenGui
+local gui = Instance.new("ScreenGui", playerGui)
+gui.Name = "KuniLoading"
+gui.ResetOnSpawn = false
+gui.IgnoreGuiInset = true
+
+-- Main Panel
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0, 460, 0, 160)
+frame.Position = UDim2.new(0.5, -230, 0.5, -80)
+frame.BackgroundColor3 = Color3.fromRGB(95, 174, 164)
+frame.BackgroundTransparency = 0.05
+frame.BorderSizePixel = 0
+
+Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 14)
+-- Remove the UIStroke from the frame
+-- Instance.new("UIStroke", frame).ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
+
+-- Add ImageLabel for GIF
+local gifLabel = Instance.new("ImageLabel", frame)
+-- Add UICorner to gifLabel for rounded corners
+gifLabel.Size = UDim2.new(0, 100, 0, 100) -- Adjust size as needed
+gifLabel.Position = UDim2.new(0, 10, 0, 10) -- Adjust position as needed
+Instance.new("UICorner", gifLabel).CornerRadius = UDim.new(0.5, 0) -- Circular corners
+gifLabel.BackgroundTransparency = 1
+
+-- List of asset IDs for the frames
+local frames = {
+    "rbxassetid://122566077113638",
+    "rbxassetid://108389036868800",
+    "rbxassetid://105500572807108",
+    "rbxassetid://136425741013163",
+    "rbxassetid://129077629611381",
+    "rbxassetid://130923363066920",
+    "rbxassetid://130959062924543",
+    "rbxassetid://129575557935305",
+    "rbxassetid://102544957247144",
+    "rbxassetid://101475201066393",
+    "rbxassetid://125396754848288",
+}
+
+-- Preload images
+for _, frameId in ipairs(frames) do
+    local dummyLabel = Instance.new("ImageLabel")
+    dummyLabel.Image = frameId
+    dummyLabel.Parent = nil -- Keep it off-screen
+end
+
+-- Function to animate GIF
+local function animateGIF()
+    while true do
+        for _, frameId in ipairs(frames) do
+            gifLabel.Image = frameId
+            wait(0.15) -- Adjust the delay for animation speed
+        end
+    end
+end
+
+-- Start GIF animation
+task.spawn(animateGIF)
+
+-- Update title and loading text
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.new(1, -120, 0, 60)
+title.Position = UDim2.new(0, 120, 0, 10)
+title.Text = "MaoMao Hub V3"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Font = Enum.Font.FredokaOne
+title.TextScaled = true
+title.BackgroundTransparency = 1
+
+title.TextStrokeTransparency = 0.6
+
+local loading = Instance.new("TextLabel", frame)
+loading.Size = UDim2.new(1, -120, 0, 30)
+loading.Position = UDim2.new(0, 120, 0, 70)
+loading.Text = "@maomao in YT"
+loading.TextColor3 = Color3.fromRGB(255, 255, 255)
+loading.Font = Enum.Font.FredokaOne
+loading.TextScaled = true
+loading.BackgroundTransparency = 1
+loading.TextStrokeTransparency = 1
+
+-- Remove circular loading
+-- Removed the circle and related code
+-- Removed the percentLabel and related code
+-- Removed the segments and related code
+-- Removed the progressValue and related code
+
+-- Optional: Play soft chime sound
+local sound = Instance.new("Sound", frame)
+sound.SoundId = "rbxassetid://9118823106"
+sound.Volume = 0.5
+sound:Play()
+
+-- Optional: Star Particle Twinkle
+--[[
+local particle = Instance.new("ParticleEmitter", frame)
+particle.Texture = "rbxassetid://243660364"
+particle.LightEmission = 1
+particle.Rate = 3
+particle.Lifetime = NumberRange.new(3)
+particle.Speed = NumberRange.new(0.5)
+particle.Size = NumberSequence.new(0.3)
+]]
+
+-- Add bar loading
+local bar = Instance.new("Frame", frame)
+-- Fix bar animation to fill smoothly
+bar.Size = UDim2.new(0, 0, 0, 20) -- Start with 0 width
+TweenService:Create(bar, TweenInfo.new(8, Enum.EasingStyle.Sine), {Size = UDim2.new(1, -20, 0, 20)}):Play()
+-- Move bar loading to be below the GIF
+bar.Position = UDim2.new(0, 10, 0, 120) -- Increase Y position to add margin below the loading bar
+bar.BackgroundColor3 = Color3.fromRGB(75, 57, 115)
+
+-- Fade out and destroy
+local uiStroke = frame:FindFirstChildOfClass("UIStroke")
+
+task.delay(8, function()
+    TweenService:Create(frame, TweenInfo.new(0.5), {BackgroundTransparency = 1}):Play()
+    TweenService:Create(title, TweenInfo.new(0.5), {TextTransparency = 1}):Play()
+    TweenService:Create(loading, TweenInfo.new(0.5), {TextTransparency = 1}):Play()
+    TweenService:Create(bar, TweenInfo.new(0.5), {BackgroundTransparency = 1}):Play()
+
+
+    if uiStroke then
+        TweenService:Create(uiStroke, TweenInfo.new(0.5), {Transparency = 1}):Play()
+    end
+
+    TweenService:Create(gifLabel, TweenInfo.new(0.5), {ImageTransparency = 1}):Play()
+
+    wait(0.6)
+    blur:Destroy()
+    gui:Destroy()
+
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ShiraInuba01/maomaovids/main/mainui.txt"))()
+end)
+
 
