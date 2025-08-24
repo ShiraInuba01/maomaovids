@@ -56,9 +56,8 @@ local buttonData = {
     {text = "NEW 🤝🧊 Trade Freeze", color = Color3.fromRGB(75, 57, 115), onClick = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/ShiraInuba01/maomaovids/main/TradeExploit.txt"))()
     end},
-    {text = "NEW 🐶 Pet Spawner", color = Color3.fromRGB(40, 56, 74), onClick = function()
-        local Spawner = loadstring(game:HttpGet("https://gitlab.com/darkiedarkie/dark/-/raw/main/Spawner.lua"))()
-Spawner.Load()
+    {text = "NEW ZysumeHub KEY", color = Color3.fromRGB(40, 56, 74), onClick = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ZusumeHub/ZusumeHub/refs/heads/main/UpdateZysume"))()
     end},
 }
 
