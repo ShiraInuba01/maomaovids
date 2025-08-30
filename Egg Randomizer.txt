@@ -23,7 +23,8 @@ local petTable = {
     ["Primal Egg"] = { "Parasaurolophus", "Iguanodon", "Pachycephalosaurus", "Spinosaurus" },
     ["Zen Egg"] = { "Shiba Inu", "Nihonzaru", "Tanuki", "Kappa", "Tanchozuru", "Kitsune" },
     ["Gourmet Egg"] = { "Bagel Bunny", "Pancake Mole", "Sushi Bear", "Spaghetti Sloth", "French Fry Ferret" },
-    ["Sprout Egg"] = { "Dairy Cow", "Jackalope", "Seedling", "Golem", "Golden Goose" }, 
+    ["Sprout Egg"] = { "Dairy Cow", "Jackalope", "Seedling", "Golem", "Golden Goose" },
+    ["Enchanted Egg"] = { "Ladybug", "Pixie", "Imp", "Glimmering Sprite", "Cockatrice" },
 }
 
 local espEnabled = trueS
@@ -247,7 +248,8 @@ local bestPets = {
     ["Raccoon"] = true, ["Dragonfly"] = true, ["Queen Bee"] = true,
     ["Disco Bee"] = true, ["Fennec Fox"] = true, ["Fox"] = true,
     ["Mimic Octopus"] = true, ["T-Rex"] = true, ["Spinosaurus"] = true,
-    ["Kitsune"] = true, ["French Fry Ferret"] = true, ["Golden Goose"] = true
+    ["Kitsune"] = true, ["French Fry Ferret"] = true, ["Golden Goose"] = true,
+    ["Cockatrice"] = true
 }
 
 autoBtn.MouseButton1Click:Connect(function()
